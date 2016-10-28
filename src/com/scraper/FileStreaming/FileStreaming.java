@@ -13,7 +13,7 @@ public class FileStreaming
 {
 	final int BUFFER_SIZE = 4096;
     
-    public void downloadFile(String fileURL, String saveDir)
+    public boolean downloadFile(String fileURL, String saveDir)
             throws IOException {
         URL url = new URL(fileURL);
         HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
@@ -60,12 +60,14 @@ public class FileStreaming
             
             outputStream.close();
             inputStream.close();
- 
+            httpConn.disconnect();
             System.out.println("File downloaded");
+            return true;
         } else {
             System.out.println("No file to download. Server replied HTTP code: " + responseCode);
+            return false;
         }
-        httpConn.disconnect();
+        
     }
     
     public boolean matchScrapers(JSONObject psObj,JSONObject apkObj)
